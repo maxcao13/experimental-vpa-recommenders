@@ -1,0 +1,4 @@
+kubernetes==32.0.0
+prometheus-api-client==0.5.7
+numpy==2.2.4
+scikit-learn==1.6.1
