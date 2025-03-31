@@ -54,7 +54,7 @@ pip install -r requirements.txt
 
 Simplest way to try this out is to install a `kind` cluster with `InPlacePodVerticalScaling`.
 
-1. Install kind and prerequites using the instructions: https://kind.sigs.k8s.io/
+1. Install kind and prerequisites using the instructions: https://kind.sigs.k8s.io/
 2. Create a kind config file like this and use it to create a cluster:
 
     ```yaml
@@ -75,7 +75,9 @@ Simplest way to try this out is to install a `kind` cluster with `InPlacePodVert
 4. Install prometheus. The easiest way to do this is by using helm.
 
     ```bash
-    helm upgrade --install -f prom_values.yaml prometheus prometheus-community/prometheus -n monitoring
+    $ helm upgrade --install -f prom_values.yaml prometheus prometheus-community/prometheus -n monitoring
+    Release "prometheus" has been upgraded. Happy Helming!
+    ...output omitted...
     ```
 
     This will install Prometheus server inside he cluster using helm with the `prom_values.yaml` overrides which disable some unneeded components.
@@ -84,7 +86,7 @@ Simplest way to try this out is to install a `kind` cluster with `InPlacePodVert
 
     **LOCAL:**
 
-    Then, expose the prometheus endpoint outside of the cluster in order for the recommender to query it:
+    Expose the prometheus server endpoint outside of the cluster in order for the recommender to query it:
 
     ```bash
     $ export POD_NAME=$(kubectl get pods --namespace monitoring -l "app.kubernetes.io/name=prometheus,app.kubernetes.io/instance=prometheus" -o jsonpath="{.items[0].metadata.name}")
@@ -99,7 +101,10 @@ Simplest way to try this out is to install a `kind` cluster with `InPlacePodVert
     ...output omitted...
     ```
 
+    The recommender will attempt to use your local kubeconfig.
+
     **IN CLUSTER:**
+
     To run the recommender within the cluster, we need to build and push the image to an image repository. Or if you trust me enough, you can use the image here: `quay.io/macao/shift-week-03-24-25:latest`
 
     Then we need to install some Kubernetes RBAC in order for the recommenders to query Prometheus within the cluster and mutate VPA objects.
